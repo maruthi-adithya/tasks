@@ -1,0 +1,253 @@
+put twitter/signup/1
+{
+    "handle":"@iamsrk",
+    "name":"Shah Rukh Khan",
+    "email":"srk@email.com"
+}
+put twitter/signup/2
+{
+    "handle":"@iafarook",
+    "name":"Farook Khan",
+    "email":"farookk@email.com"
+}
+put twitter/signup/3
+{
+    "handle":"@cutiepie",
+    "name":"Latha Mang",
+    "email":"latham@email.com"
+}
+put twitter/signup/4
+{
+    "handle":"@powar",
+    "name":"Sharad Powar",
+    "email":"spowar@email.com"
+}
+put twitter/signup/5
+{
+    "handle":"@katty",
+    "name":"Katrina",
+    "email":"katrina@email.com"
+}
+get twitter/signup/_search
+PUT twitter/tweet/1
+{
+    "handle":"iamsqk",
+    "name":"Shah Rukh Khan",
+    "text":"Enjoying time at the Oscars.",
+    "retweets":25,
+    "favourites":40,
+    "location":"London"
+}
+PUT twitter/tweet/2
+{
+    "handle":"iamsqk",
+    "name":"Shah Rukh Khan",
+    "text":"Life is awesome",
+    "retweets":25,
+    "favourites":40,
+    "location":"London"
+}
+delete twitter/tweet/2
+PUT twitter/tweet/2
+{
+    "handle":"iamsqk",
+    "name":"Shah Rukh Khan",
+    "text":"Life is awesome",
+    "retweets":25,
+    "favourites":40,
+    "location":"India"
+}
+PUT twitter/tweet/3
+{
+    "handle":"iamsqk",
+    "name":"Shah Rukh Khan",
+    "text":"KKR win ipl 2017",
+    "retweets":25,
+    "favourites":40,
+    "location":"india"
+}
+PUT twitter/tweet/4
+{
+    "handle":"powar",
+    "name":"Sharad Powar",
+    "text":"End of ipl 2017",
+    "retweets":25,
+    "favourites":40,
+    "location":"india"
+}
+PUT twitter/tweet/4
+{
+    "handle":"powar",
+    "name":"Sharad Powar",
+    "text":"End of ipl 2017",
+    "retweets":25,
+    "favourites":40,
+    "location":"india"
+}
+PUT twitter/tweet/5
+{
+    "handle":"katty",
+    "name":"Katrina",
+    "text":"Go kkr. End of ipl 2017",
+    "retweets":25,
+    "favourites":40,
+    "hashtag":"#ipl2017",
+    "location":"india"
+}
+PUT twitter/tweet/6
+{
+    "handle":"cutiepie",
+    "name":"Latha Mang",
+    "text":"it is so awespme",
+    "retweets":25,
+    "favourites":40,
+    "location":"india"
+}
+PUT twitter/tweet/7
+{
+    "handle":"cutiepie",
+    "name":"Latha Mang",
+    "text":"2017 blooms",
+    "retweets":25,
+    "favourites":40,
+    "location":"india"
+}
+PUT twitter/tweet/8
+{
+    "handle":"katty",
+    "name":"Katrina",
+    "text":" End of ipl 2017 with close fini",
+    "retweets":25,
+    "favourites":40,
+    "hashtag":"#ipl2017",
+    "location":"india"
+}
+get twitter/tweet/_search
+{
+    "query":
+    {
+      "match": {
+         "location": "india"
+      }
+
+    }
+
+
+
+}
+GET twitter/tweet/_count?q=location:india
+DELETE twitter/tweet/6
+
+POST twitter/tweet/_analyze
+{
+    "analyzer": "simple",
+    "text":"end of ipl ipl was awesome next year ipl will be back"
+}
+get twitter/tweet/_analyze
+POST /customer/external/1/_update?pretty
+{
+  "script" : "ctx._source.age += 5"
+}
+PUT twitter/tweet/_analyze
+{
+  "mappings": {
+    "my_type": {
+      "properties": {
+        "title": {
+          "type":     "text",
+          "analyzer": "standard"
+        }
+      }
+    }
+  }
+}
+GET twitter/tweet/_search
+{
+
+ "size": 0,
+    "aggs":
+    {
+        "top-terms-aggregation":
+        {
+
+            "terms":
+            {
+
+                "field":"text",
+                "size":10
+
+
+            }
+
+
+
+        }
+    }
+
+}
+GET /twitter/tweet/7/_explain
+{
+      "query" : {
+        "match" : { "text" : "2017" }
+      }
+}
+GET twitter/tweet/_search
+{
+      "aggs": {
+        "top-tags": {
+            "terms": {
+                "field": "text",
+                "size": 10
+            }
+}
+},
+"aggs": {
+                "top_tag_hits": {
+                    "top_hits": {
+                        "sort": [
+                            {
+                                "name": {
+                                    "order": "desc"
+                                }
+                            }
+                        ],
+                        "_source": {
+                            "includes": [
+                                "handle"
+                            ]
+                        },
+                        "size" : 10
+                    }
+                }
+            }
+        }
+    }
+
+
+
+}
+GET twitter/tweet/_search
+{
+    "size": 0,
+    "aggs": {
+        "top-tags": {
+            "terms": {
+                "field": "text",
+                "size": 10
+            },
+            "aggs": {
+                "top_tag_hits": {
+                    "top_hits": {
+
+                        "_source": {
+                            "includes": [
+                                "name"
+                            ]
+                        },
+                        "size" : 1
+                    }
+                }
+            }
+        }
+    }
+}
